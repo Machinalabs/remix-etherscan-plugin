@@ -30,15 +30,6 @@ export const CaptureKeyView: React.FC<Props> = ({ onSaveAPIKey }) => {
                             type="text"
                             name="apiKey"
                             placeholder="Example: GM1T20XY6JGSAPWKDCYZ7B2FJXKTJRFVGZ" />
-                        {/* <input
-                            className={(errors.apiKey && touched.apiKey) ? "form-control form-control-sm is-invalid" : "form-control form-control-sm"}
-                            type="text"
-                            placeholder="Example: GM1T20XY6JGSAPWKDCYZ7B2FJXKTJRFVGZ"
-                            name="apiKey"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.apiKey}
-                        /> */}
                         <ErrorMessage className="invalid-feedback" name="apiKey" component="div" />
                     </div>
 
