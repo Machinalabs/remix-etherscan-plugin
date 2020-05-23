@@ -1,0 +1,110 @@
+version: 2.0
+
+aliases:
+  - &nodejs-docker-image
+    - image: circleci/node:8.12.0
+  
+  - &restore_cache
+    restore_cache:
+      name: Restore node_modules cache
+      keys:
+        - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+        - node-v1-{{ .Branch }}-
+        - node-v1-
+
+jobs:
+  setup:
+    docker: *nodejs-docker-image
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Install NPM
+          command: |
+            echo 'Installing dependencies'
+            npm install
+      - save_cache: 
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+  
+  tslint-and-format: 
+    docker: *nodejs-docker-image
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: TSLint
+          command: npm run tslint
+      - run:
+          name: Check formatting (Prettier)
+          command: npm run check-formatting
+  
+  unit-tests:
+    docker: *nodejs-docker-image
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Run unit tests with JUnit as reporter
+          command: npm run test:ci
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
+
+  npm-audit: 
+    docker: *nodejs-docker-image
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: NPM Audit
+          command: npm audit
+
+  bundle: 
+    docker: *nodejs-docker-image
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Bundle
+          command: npm run bundle
+
+  publish: 
+    docker: *nodejs-docker-image
+    steps:
+      - checkout
+      - *restore_cache
+      - run:
+          name: Publish
+          command: npm run publish
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - setup
+      - tslint-and-format:
+          requires:
+            - setup
+      - unit-tests:
+          requires:
+            - setup
+      - npm-audit:
+          requires:
+            - setup
+      - bundle:
+          requires:
+            - tslint-and-format
+            - unit-tests
+            - npm-audit
+      - publish:
+          context: SolidStudio
+          requires:
+            - bundle
+          filters:
+            branches:
+              only: master
