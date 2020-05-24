@@ -10,8 +10,7 @@ const devMode = { port: 8080 }
 
 export const HomeView: React.FC = () => {
   const [clientInstance, setClientInstance] = useState(undefined as any)
-  const [isInEditMode, setIsInEditMode] = useState(false)
-  const [hasError, setHasError] = useState(false)
+  // const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     console.log("Remix Etherscan loading...")
@@ -36,8 +35,8 @@ export const HomeView: React.FC = () => {
             }}
           />
         ) : (
-          <VerifyView client={clientInstance} apiKey={apiKey} />
-        )
+            <VerifyView client={clientInstance} apiKey={apiKey} />
+          )
       }
     </AppContext.Consumer>
   )

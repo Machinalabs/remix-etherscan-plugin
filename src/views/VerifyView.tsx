@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
 }
 
@@ -122,6 +122,8 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
       values.contractName,
       compilationResult
     )
+
+    console.log("Verification result", verificationResult)
   }
 
   const [results, setResults] = useState("")
