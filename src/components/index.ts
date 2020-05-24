@@ -1,1 +1,1 @@
-export { HeaderWithSettings } from './HeaderWithSettings'
+export { HeaderWithSettings } from "./HeaderWithSettings"

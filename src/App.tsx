@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react"
 
-import { AppContext } from './AppContext'
-import { Routes } from './routes';
+import { AppContext } from "./AppContext"
+import { Routes } from "./routes"
 
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { useLocalStorage } from "./hooks/useLocalStorage"
 
-import './App.css';
+import "./App.css"
 
 const App = () => {
   const [apiKey, setAPIKey] = useLocalStorage("apiKey", "")
@@ -14,7 +14,7 @@ const App = () => {
     <AppContext.Provider value={{ apiKey, setAPIKey }}>
       <Routes />
     </AppContext.Provider>
-  );
+  )
 }
 
-export default App;
+export default App

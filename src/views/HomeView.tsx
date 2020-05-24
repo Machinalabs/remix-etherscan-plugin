@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { createIframeClient } from "@remixproject/plugin"
 
-import { VerifyView } from './VerifyView'
+import { VerifyView } from "./VerifyView"
 import { AppContext } from "../AppContext"
 import { Redirect } from "react-router-dom"
 
@@ -27,19 +27,18 @@ export const HomeView: React.FC = () => {
 
   return (
     <AppContext.Consumer>
-      {({ apiKey }) => (
-        !apiKey ?
+      {({ apiKey }) =>
+        !apiKey ? (
           <Redirect
             to={{
               pathname: "/settings",
-              state: { from: "/" }
+              state: { from: "/" },
             }}
-          /> :
-          <VerifyView
-            client={clientInstance}
-            apiKey={apiKey}
           />
-      )}
+        ) : (
+          <VerifyView client={clientInstance} apiKey={apiKey} />
+        )
+      }
     </AppContext.Consumer>
   )
 }
