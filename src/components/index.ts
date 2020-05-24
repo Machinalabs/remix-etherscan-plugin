@@ -1,2 +1,2 @@
 export { HeaderWithSettings } from "./HeaderWithSettings"
-export { SubmitButton } from './SubmitButton'
+export { SubmitButton } from "./SubmitButton"

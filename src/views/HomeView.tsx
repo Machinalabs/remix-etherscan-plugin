@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom"
 import { VerifyView } from "./VerifyView"
 import { AppContext } from "../AppContext"
 
-
 export const HomeView: React.FC = () => {
   // const [hasError, setHasError] = useState(false)
   return (
@@ -19,8 +18,8 @@ export const HomeView: React.FC = () => {
             }}
           />
         ) : (
-            <VerifyView client={clientInstance} apiKey={apiKey} />
-          )
+          <VerifyView client={clientInstance} apiKey={apiKey} />
+        )
       }
     </AppContext.Consumer>
   )

@@ -4,13 +4,13 @@ import { PluginApi, IRemixApi, PluginClient, Api } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
 
-import { getNetworkName, getEtherScanApi } from '../utils'
+import { getNetworkName, getEtherScanApi } from "../utils"
 
 import { SubmitButton } from "../components"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+    PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
 }
 
@@ -31,7 +31,7 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
 
     if (!compilationResult) {
       throw new Error("no compilation result available")
-    }// TODO handle better, Maybe create a logger and a submit issue button that captures the error and send directly to my dashboard...
+    } // TODO handle better, Maybe create a logger and a submit issue button that captures the error and send directly to my dashboard...
 
     const contractArguments = values.contractArguments.replace("0x", "")
 
@@ -99,7 +99,7 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
 
     const resetAfter10Seconds = () => {
       setTimeout(() => {
-        client.emit('statusChanged', { key: 'none' })
+        client.emit("statusChanged", { key: "none" })
       }, 10000)
     }
 
@@ -202,13 +202,14 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
             </div>
 
             <SubmitButton text="Verify Contract" isSubmitting={isSubmitting} />
-
           </form>
         )}
       </Formik>
 
-      <div style={{ marginTop: "2em", fontSize: "0.8em", textAlign: "center" }}
-        dangerouslySetInnerHTML={{ __html: results }} />
+      <div
+        style={{ marginTop: "2em", fontSize: "0.8em", textAlign: "center" }}
+        dangerouslySetInnerHTML={{ __html: results }}
+      />
 
       <div style={{ display: "block", textAlign: "center", marginTop: "1em" }}>
         <Link to="/receipts">View Receipts</Link>

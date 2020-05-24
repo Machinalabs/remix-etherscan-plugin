@@ -50,7 +50,6 @@ export const CaptureKeyView: React.FC = () => {
               </div>
 
               <SubmitButton text="Save API key" />
-
             </form>
           )}
         </Formik>

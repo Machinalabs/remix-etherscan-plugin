@@ -7,5 +7,5 @@ export const AppContext = React.createContext({
     console.log("Set API Key from Context")
   },
   clientInstance: {} as PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+    PluginClient<Api, Readonly<IRemixApi>>,
 })
