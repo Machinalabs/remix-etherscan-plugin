@@ -67,14 +67,14 @@ jobs:
           name: Build
           command: yarn build
 
-  publish: 
+  deploy: 
     <<: *defaults
     steps:
       - checkout
       - *restore_cache
       - run:
-          name: Publish
-          command: yarn publish
+          name: Deploy
+          command: yarn deploy
 
 workflows:
   version: 2
@@ -91,7 +91,7 @@ workflows:
           requires:
             - tslint-and-format
             - unit-tests
-      - publish:
+      - deploy:
           context: SolidStudio
           requires:
             - build
