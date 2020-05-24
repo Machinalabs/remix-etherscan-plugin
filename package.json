@@ -27,7 +27,8 @@
     "eject": "react-scripts eject",
     "test:ci": "CI=true react-scripts test",
     "tslint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
-    "check-formatting": "prettier --write --list-different './src/**/*.tsx'"
+    "check-formatting": "prettier --write --list-different './src/**/*.tsx'",
+    "publish": "yarn build && surge --project ./build --domain remix-control-flow-gas-v2.surge.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,7 +47,9 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.5",
+    "coveralls": "^3.1.0",
     "prettier": "^2.0.5",
+    "surge": "^0.21.3",
     "tslint": "^6.1.2",
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.3.0",
