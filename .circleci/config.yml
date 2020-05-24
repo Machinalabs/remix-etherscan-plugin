@@ -9,7 +9,7 @@ aliases:
       name: Restore Yarn Package Cache
       keys:
         - yarn-packages-{{ checksum "yarn.lock" }}
-
+        - yarn-packages-{{ .Branch }}-
 jobs:
   setup:
     docker: *nodejs-docker-image
@@ -25,6 +25,7 @@ jobs:
           name: Save Yarn Package Cache
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
+            - ~/.cache/yarn
             - node_modules
   
   tslint-and-format: 
