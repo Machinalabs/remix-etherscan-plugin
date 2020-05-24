@@ -8,7 +8,7 @@ aliases:
     restore_cache:
       name: Restore Yarn Package Cache
       keys:
-        - yarn-packages-{{ checksum "yarn.lock" }}
+        - yarn-packages-{{ checksum "123" }}
         - yarn-packages-{{ .Branch }}-
 
 version: 2.0
@@ -26,7 +26,7 @@ jobs:
             yarn install
       - save_cache: 
           name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: yarn-packages-{{ checksum "123" }}
           paths:
             - node_modules
   
