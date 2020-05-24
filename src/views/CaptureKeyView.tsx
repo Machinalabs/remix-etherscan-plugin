@@ -1,8 +1,10 @@
 import React from "react"
 
 import { Formik, ErrorMessage, Field } from "formik"
-import { AppContext } from "../AppContext"
 import { useHistory, useLocation } from "react-router-dom"
+
+import { AppContext } from "../AppContext"
+import { SubmitButton } from "../components"
 
 export const CaptureKeyView: React.FC = () => {
   const location = useLocation()
@@ -47,9 +49,8 @@ export const CaptureKeyView: React.FC = () => {
                 />
               </div>
 
-              <button type="submit" className="btn btn-sm btn-primary">
-                Save API key
-              </button>
+              <SubmitButton text="Save API key" />
+
             </form>
           )}
         </Formik>

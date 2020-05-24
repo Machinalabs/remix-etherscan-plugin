@@ -1,12 +1,14 @@
 import React, { useState } from "react"
 
-import { Formik, ErrorMessage, Field } from "formik"
 import { PluginApi, IRemixApi, PluginClient, Api } from "@remixproject/plugin"
+import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
+
+import { SubmitButton } from "../components"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
 }
 
@@ -214,13 +216,8 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
               />
             </div>
 
-            <button
-              type="submit"
-              className="btn btn-secondary"
-              style={{ padding: ".175rem 0.6rem" }}
-            >
-              Verify Contract
-            </button>
+            <SubmitButton text="Verify Contract" />
+
           </form>
         )}
       </Formik>
