@@ -54,23 +54,23 @@ jobs:
       - store_artifacts:
           path: reports/junit
 
-  npm-audit: 
+  audit: 
     docker: *nodejs-docker-image
     steps:
       - checkout
       - *restore_cache
       - run:
-          name: NPM Audit
-          command: npm audit
+          name: Audit
+          command: yarn audit
 
-  bundle: 
+  build: 
     docker: *nodejs-docker-image
     steps:
       - checkout
       - *restore_cache
       - run:
-          name: Bundle
-          command: yarn bundle
+          name: Build
+          command: yarn build
 
   publish: 
     docker: *nodejs-docker-image
@@ -92,14 +92,14 @@ workflows:
       - unit-tests:
           requires:
             - setup
-      - npm-audit:
+      - audit:
           requires:
             - setup
       - bundle:
           requires:
             - tslint-and-format
             - unit-tests
-            - npm-audit
+            - audit
       - publish:
           context: SolidStudio
           requires:
