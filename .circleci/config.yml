@@ -1,5 +1,4 @@
 defaults: &defaults
-  working_directory: ~/remix-etherscan
   docker:
     - image: circleci/node:12.16
 
@@ -8,8 +7,9 @@ aliases:
     restore_cache:
       name: Restore Yarn Package Cache
       keys:
-        - yarn-packages-{{ checksum "123" }}
-        - yarn-packages-{{ .Branch }}-
+        - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+        - yarn-packages-v1-{{ .Branch }}-
+        - yarn-packages-v1-
 
 version: 2.0
 
@@ -23,12 +23,12 @@ jobs:
           name: Install Dependencies
           command: |
             echo 'Installing dependencies'
-            yarn install
+            yarn --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache: 
           name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "123" }}
           paths:
-            - node_modules
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
   
   tslint-and-format: 
     <<: *defaults
