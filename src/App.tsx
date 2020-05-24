@@ -3,16 +3,17 @@ import React from 'react';
 import { AppContext } from './AppContext'
 import { Routes } from './routes';
 
+import { useLocalStorage } from './hooks/useLocalStorage'
+
 import './App.css';
 
 const App = () => {
-  const setAPIKey = () => {
+  const [apiKey, setAPIKey] = useLocalStorage("apiKey", "")
 
-  }
   return (
-    // <AppContext.Provider value={{ apiKey: "123", setAPIKey }}>
-    <Routes />
-    // </AppContext.Provider>
+    <AppContext.Provider value={{ apiKey, setAPIKey }}>
+      <Routes />
+    </AppContext.Provider>
   );
 }
 

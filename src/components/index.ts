@@ -1,0 +1,1 @@
+export { HeaderWithSettings } from './HeaderWithSettings'

@@ -1,19 +1,37 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, RouteProps } from "react-router-dom";
 
-import { ErrorView, HomeView, ReceiptsView } from './views';
+import { ErrorView, HomeView, ReceiptsView, CaptureKeyView } from './views';
+import { DefaultLayout } from './layouts'
+
+interface Props extends RouteProps {
+    component: any // TODO: new (props: any) => React.Component
+    from: string
+}
+
+const RouteWithHeader = ({ component: Component, ...rest }: Props) => {
+    return (
+        <Route
+            {...rest}
+            render={matchProps => (
+                <DefaultLayout {...rest}>
+                    <Component {...matchProps} />
+                </DefaultLayout>
+            )}
+        />
+    )
+}
 
 export const Routes = () => (
     <Router>
         <Switch>
-            <Route exact path="/">
-                <HomeView />
-            </Route>
+            <RouteWithHeader exact path="/" component={HomeView} from="/" />
             <Route path="/error">
                 <ErrorView />
             </Route>
-            <Route path="/receipts">
-                <ReceiptsView />
+            <RouteWithHeader path="/receipts" component={ReceiptsView} from="/receipts" />
+            <Route path="/settings">
+                <CaptureKeyView />
             </Route>
         </Switch>
     </Router>
