@@ -87,14 +87,14 @@ workflows:
       - unit-tests:
           requires:
             - setup
-      - bundle:
+      - build:
           requires:
             - tslint-and-format
             - unit-tests
       - publish:
           context: SolidStudio
           requires:
-            - bundle
+            - build
           filters:
             branches:
               only: master
