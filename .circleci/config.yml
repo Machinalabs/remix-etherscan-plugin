@@ -24,11 +24,10 @@ jobs:
           name: Install Dependencies
           command: |
             echo 'Installing dependencies'
-            yarn --frozen-lockfile --cache-folder ~/.cache/yarn
+            yarn --frozen-lockfile
       - save_cache: 
           name: Save Yarn Package Cache
           paths:
-            - ~/.cache/yarn
             - node_modules
           key: yarn-packages-v1-{{ checksum "yarn.lock" }}
   
@@ -59,15 +58,6 @@ jobs:
       - store_artifacts:
           path: reports/junit
 
-  audit: 
-    <<: *defaults
-    steps:
-      - checkout
-      - *restore_cache
-      - run:
-          name: Audit
-          command: yarn audit
-
   build: 
     <<: *defaults
     steps:
@@ -97,14 +87,10 @@ workflows:
       - unit-tests:
           requires:
             - setup
-      - audit:
-          requires:
-            - setup
       - bundle:
           requires:
             - tslint-and-format
             - unit-tests
-            - audit
       - publish:
           context: SolidStudio
           requires:
