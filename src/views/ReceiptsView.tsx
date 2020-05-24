@@ -20,6 +20,7 @@ export const ReceiptsView: React.FC = () => {
       const params = `guid=${values.receiptGuid}&module=contract&action=checkverifystatus&apiKey=${apiKey}`
       const response = await fetch(`${etherscanApi}?${params}`, { method: 'GET' })
       let { message, result } = await response.json()
+      console.log("Message", message)
       setResults(result)
     } catch (error) {
       setResults(error.message)
