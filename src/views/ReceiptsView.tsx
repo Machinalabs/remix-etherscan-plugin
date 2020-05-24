@@ -1,59 +1,79 @@
-import React from "react"
+import React, { useState } from "react"
 
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
 
 import { AppContext } from "../AppContext"
 import { SubmitButton } from "../components"
+import { getEtherScanApi, getNetworkName } from "../utils"
+
+interface FormValues {
+  receiptGuid: string
+}
 
 export const ReceiptsView: React.FC = () => {
+  const [results, setResults] = useState("")
+  const onGetReceiptStatus = async (values: FormValues, clientInstance: any, apiKey: string) => {
+    try {
+      const network = await getNetworkName(clientInstance)
+      const etherscanApi = getEtherScanApi(network)
+      const params = `guid=${values.receiptGuid}&module=contract&action=checkverifystatus&apiKey=${apiKey}`
+      const response = await fetch(`${etherscanApi}?${params}`, { method: 'GET' })
+      let { message, result } = await response.json()
+      setResults(result)
+    } catch (error) {
+      setResults(error.message)
+    }
+  }
+
   return (
     <AppContext.Consumer>
-      {({ apiKey, setAPIKey }) => (
-        <Formik
-          initialValues={{ receiptGuid: "" }}
-          validate={(values) => {
-            const errors = {} as any
-            if (!values.receiptGuid) {
-              errors.receiptGuid = "Required"
-            }
-            return errors
-          }}
-          onSubmit={(values) => {
-            console.log("Values", values)
-            console.log("API KEY", apiKey, "from receipts")
-          }}
-        >
-          {({ errors, touched, handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <div className="form-group" style={{ marginBottom: "0.5rem" }}>
-                <svg className="bi bi-arrow-left-short" width="1.6em" height="1.6em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <Link to="/">
-                    <path fillRule="evenodd" d="M7.854 4.646a.5.5 0 0 1 0 .708L5.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0z" />
-                    <path fillRule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h6.5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z" />
-                  </Link>
-                </svg>
-                <label htmlFor="receiptGuid">Receipt GUID</label>
-                <Field
-                  className={
-                    errors.receiptGuid && touched.receiptGuid
-                      ? "form-control form-control-sm is-invalid"
-                      : "form-control form-control-sm"
-                  }
-                  type="text"
-                  name="receiptGuid"
-                />
-                <ErrorMessage
-                  className="invalid-feedback"
-                  name="receiptGuid"
-                  component="div"
-                />
-              </div>
+      {({ apiKey, clientInstance }) => (
+        <div>
+          <Formik
+            initialValues={{ receiptGuid: "" }}
+            validate={(values) => {
+              const errors = {} as any
+              if (!values.receiptGuid) {
+                errors.receiptGuid = "Required"
+              }
+              return errors
+            }}
+            onSubmit={(values) => onGetReceiptStatus(values, clientInstance, apiKey)}
+          >
+            {({ errors, touched, handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <div className="form-group" style={{ marginBottom: "0.5rem" }}>
+                  <h6>Get your Receipt GUID status</h6>
+                  <label htmlFor="receiptGuid">Receipt GUID</label>
+                  <Field
+                    className={
+                      errors.receiptGuid && touched.receiptGuid
+                        ? "form-control form-control-sm is-invalid"
+                        : "form-control form-control-sm"
+                    }
+                    type="text"
+                    name="receiptGuid"
+                  />
+                  <ErrorMessage
+                    className="invalid-feedback"
+                    name="receiptGuid"
+                    component="div"
+                  />
+                </div>
 
-              <SubmitButton text="Check" />
-            </form>
-          )}
-        </Formik>
+                <SubmitButton text="Check" />
+              </form>
+            )}
+          </Formik>
+
+          <div style={{ marginTop: "2em", fontSize: "0.8em", textAlign: "center" }}
+            dangerouslySetInnerHTML={{ __html: results }} />
+
+          <div style={{ display: "block", textAlign: "center", marginTop: "1em" }}>
+            <Link to="/">Go back</Link>
+          </div>
+        </div>
       )}
     </AppContext.Consumer>
   )

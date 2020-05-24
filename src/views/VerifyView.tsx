@@ -4,6 +4,8 @@ import { PluginApi, IRemixApi, PluginClient, Api } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
 
+import { getNetworkName, getEtherScanApi } from '../utils'
+
 import { SubmitButton } from "../components"
 
 interface Props {
@@ -40,20 +42,14 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
       contractName: string,
       compilationResultParam: any
     ) => {
-      const network = await getNetworkName()
+      const network = await getNetworkName(client)
+      const etherscanApi = getEtherScanApi(network)
 
       const fileName = compilationResultParam.source.target // Check if it is not empty
-
-      console.log("Filename", fileName)
 
       const contractMetadata =
         compilationResultParam.data.contracts[fileName][contractName].metadata
       const contractMetadataParsed = JSON.parse(contractMetadata)
-
-      const etherscanApi =
-        network === "main"
-          ? `https://api.etherscan.io/api`
-          : `https://api-${network}.etherscan.io/api`
 
       const data: { [key: string]: string | any } = {
         apikey: apiKeyParam, // A valid API-Key is required
@@ -83,7 +79,7 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
         const { message, result, status } = await response.json()
         console.log("Message returned", message, result, status)
         if (message === "OK" && status === "1") {
-          scheduleResetStatus()
+          resetAfter10Seconds()
           return `Contract verified correctly <br> Receipt GUID ${result}`
         }
         if (message === "NOTOK") {
@@ -92,7 +88,7 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
             type: "error",
             title: result,
           })
-          scheduleResetStatus()
+          resetAfter10Seconds()
         }
         return result
       } catch (error) {
@@ -101,18 +97,7 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
       }
     }
 
-    const getNetworkName = async () => {
-      const network = await client.call("network", "detectNetwork")
-      if (!network) {
-        throw new Error("no known network to verify against")
-      }
-      const name = network.name!.toLowerCase()
-      // TODO : remove that when https://github.com/ethereum/remix-ide/issues/2017 is fixed
-      return name === "görli" ? "goerli" : name
-    }
-
-    /** Reset the status of the plugin to none after 10sec */
-    const scheduleResetStatus = () => {
+    const resetAfter10Seconds = () => {
       setTimeout(() => {
         client.emit('statusChanged', { key: 'none' })
       }, 10000)
