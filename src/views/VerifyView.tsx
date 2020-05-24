@@ -20,22 +20,16 @@ interface FormValues {
 
 export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
   const onVerifyContract = async (values: FormValues) => {
-    // TODO
-    console.log("On Verify Contract Clicked")
-
-    // console.log("Props API Key", apiKey)
-
     const compilationResult = (await client.call(
       "solidity",
       "getCompilationResult"
     )) as any
 
-    console.log("Compilation results")
+    console.log("Compilation results", compilationResult)
 
-    if (!compilationResult) throw new Error("no compilation result available") // TODO handle better, create a logger and a submit issue button
-    // that captures the error and send directly to my dashboard...
-
-    setResults("Verifying contract. Please wait...")
+    if (!compilationResult) {
+      throw new Error("no compilation result available")
+    }// TODO handle better, Maybe create a logger and a submit issue button that captures the error and send directly to my dashboard...
 
     const contractArguments = values.contractArguments.replace("0x", "")
 
@@ -87,10 +81,10 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
         })
         const response = await fetch(etherscanApi, { method: "POST", body })
         const { message, result, status } = await response.json()
+        console.log("Message returned", message, result, status)
         if (message === "OK" && status === "1") {
-          // TODO
-          // checkValidation(etherscanApi, result)
-          // scheduleResetStatus()
+          scheduleResetStatus()
+          return `Contract verified correctly <br> Receipt GUID ${result}`
         }
         if (message === "NOTOK") {
           client.emit("statusChanged", {
@@ -98,12 +92,12 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
             type: "error",
             title: result,
           })
-          // scheduleResetStatus()
+          scheduleResetStatus()
         }
         return result
       } catch (error) {
-        // document.querySelector('div#results').innerText = error
-        setResults(error)
+        console.log("Error, something wrong happened", error)
+        setResults("Something wrong happened, try again")
       }
     }
 
@@ -117,6 +111,13 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
       return name === "görli" ? "goerli" : name
     }
 
+    /** Reset the status of the plugin to none after 10sec */
+    const scheduleResetStatus = () => {
+      setTimeout(() => {
+        client.emit('statusChanged', { key: 'none' })
+      }, 10000)
+    }
+
     const verificationResult = await verify(
       apiKey,
       values.contractAddress,
@@ -126,6 +127,8 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
     )
 
     console.log("Verification result", verificationResult)
+
+    setResults(verificationResult)
   }
 
   const [results, setResults] = useState("")
@@ -143,9 +146,6 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
           if (!values.contractName) {
             errors.contractName = "Required"
           }
-          if (!values.contractArguments) {
-            errors.contractArguments = "Required"
-          }
           if (!values.contractAddress) {
             errors.contractAddress = "Required"
           }
@@ -156,11 +156,11 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
         }}
         onSubmit={(values) => onVerifyContract(values)}
       >
-        {({ errors, touched, handleSubmit }) => (
+        {({ errors, touched, handleSubmit, isSubmitting }) => (
           <form onSubmit={handleSubmit}>
             <div className="form-group">
+              <h6>Verify your smart contracts</h6>
               <label htmlFor="contractName">Contract Name</label>
-
               <Field
                 className={
                   errors.contractName && touched.contractName
@@ -216,15 +216,16 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
               />
             </div>
 
-            <SubmitButton text="Verify Contract" />
+            <SubmitButton text="Verify Contract" isSubmitting={isSubmitting} />
 
           </form>
         )}
       </Formik>
 
-      <div id="results">{results}</div>
+      <div style={{ marginTop: "2em", fontSize: "0.8em", textAlign: "center" }}
+        dangerouslySetInnerHTML={{ __html: results }} />
 
-      <div style={{ display: "block", textAlign: "center", marginTop: "2em" }}>
+      <div style={{ display: "block", textAlign: "center", marginTop: "1em" }}>
         <Link to="/receipts">View Receipts</Link>
       </div>
     </div>
