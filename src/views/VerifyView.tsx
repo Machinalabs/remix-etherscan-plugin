@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+    PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
 }
 

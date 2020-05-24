@@ -35,8 +35,8 @@ export const HomeView: React.FC = () => {
             }}
           />
         ) : (
-            <VerifyView client={clientInstance} apiKey={apiKey} />
-          )
+          <VerifyView client={clientInstance} apiKey={apiKey} />
+        )
       }
     </AppContext.Consumer>
   )
