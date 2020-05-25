@@ -2,10 +2,10 @@ import React, { useState } from "react"
 
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
-
+import { getEtherScanApi, getNetworkName, getReceiptStatus } from "../utils"
+import { Receipt } from "../types"
 import { AppContext } from "../AppContext"
 import { SubmitButton } from "../components"
-import { getEtherScanApi, getNetworkName } from "../utils"
 
 interface FormValues {
   receiptGuid: string
@@ -20,13 +20,12 @@ export const ReceiptsView: React.FC = () => {
   ) => {
     try {
       const network = await getNetworkName(clientInstance)
+      if (network === "vm") {
+        setResults("Cannot verify in the selected network")
+        return
+      }
       const etherscanApi = getEtherScanApi(network)
-      const params = `guid=${values.receiptGuid}&module=contract&action=checkverifystatus&apiKey=${apiKey}`
-      const response = await fetch(`${etherscanApi}?${params}`, {
-        method: "GET",
-      })
-      const { message, result } = await response.json()
-      console.log("Message", message)
+      const result = await getReceiptStatus(values.receiptGuid, apiKey, etherscanApi)
       setResults(result)
     } catch (error) {
       setResults(error.message)
@@ -35,7 +34,7 @@ export const ReceiptsView: React.FC = () => {
 
   return (
     <AppContext.Consumer>
-      {({ apiKey, clientInstance }) => (
+      {({ apiKey, clientInstance, receipts }) => (
         <div>
           <Formik
             initialValues={{ receiptGuid: "" }}
@@ -81,13 +80,35 @@ export const ReceiptsView: React.FC = () => {
             dangerouslySetInnerHTML={{ __html: results }}
           />
 
-          <div
-            style={{ display: "block", textAlign: "center", marginTop: "1em" }}
-          >
+          <ReceiptsTable receipts={receipts} />
+          <div style={{ display: "block", textAlign: "center", marginTop: "1em" }}>
             <Link to="/">Go back</Link>
           </div>
         </div>
       )}
     </AppContext.Consumer>
+  )
+}
+
+const ReceiptsTable: React.FC<{ receipts: Receipt[] }> = ({ receipts }) => {
+  return (
+    <div className="table-responsive" style={{ fontSize: "0.7em" }}>
+      <h6>Receipts</h6>
+      <table className="table table-sm">
+        <thead>
+          <tr>
+            <th scope="col">Guid</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {receipts && receipts.length > 0 && receipts.map((item: Receipt, index) => {
+            return (<tr key={item.guid}>
+              <td>{item.guid}</td>
+              <td>{item.status}</td>
+            </tr>)
+          })}
+        </tbody>
+      </table></div>
   )
 }

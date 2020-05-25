@@ -4,14 +4,15 @@ import { PluginApi, IRemixApi, PluginClient, Api } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
 
-import { getNetworkName, getEtherScanApi } from "../utils"
-
+import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
+import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
+  onVerifiedContract: (receipt: Receipt) => void
 }
 
 interface FormValues {
@@ -20,7 +21,7 @@ interface FormValues {
   contractAddress: string
 }
 
-export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
+export const VerifyView: React.FC<Props> = ({ apiKey, client, onVerifiedContract }) => {
   const onVerifyContract = async (values: FormValues) => {
     const compilationResult = (await client.call(
       "solidity",
@@ -43,6 +44,9 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
       compilationResultParam: any
     ) => {
       const network = await getNetworkName(client)
+      if (network === "vm") {
+        return "Cannot verify in the selected network"
+      }
       const etherscanApi = getEtherScanApi(network)
 
       const fileName = compilationResultParam.source.target // Check if it is not empty
@@ -80,6 +84,12 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client }) => {
         console.log("Message returned", message, result, status)
         if (message === "OK" && status === "1") {
           resetAfter10Seconds()
+          const status = await getReceiptStatus(result, apiKey, etherscanApi)
+
+          onVerifiedContract({
+            guid: result,
+            status
+          })
           return `Contract verified correctly <br> Receipt GUID ${result}`
         }
         if (message === "NOTOK") {
