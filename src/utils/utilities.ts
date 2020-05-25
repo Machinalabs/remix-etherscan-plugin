@@ -25,7 +25,7 @@ export const getReceiptStatus = async (receiptGuid: string, apiKey: string, ethe
     const response = await fetch(`${etherscanApi}?${params}`, {
       method: "GET",
     })
-    const { message, result } = await response.json()
+    const { _, result } = await response.json()
     return result
   } catch (error) {
     console.log("Error", error)
