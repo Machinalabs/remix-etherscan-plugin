@@ -18,8 +18,8 @@ const App = () => {
   const [apiKey, setAPIKey] = useLocalStorage("apiKey", "")
   const [clientInstance, setClientInstance] = useState(undefined as any)
   const [receipts, setReceipts] = useLocalStorage("receipts", [])
-  const clientInstanceRef = useRef(clientInstance);
-  clientInstanceRef.current = clientInstance;
+  const clientInstanceRef = useRef(clientInstance)
+  clientInstanceRef.current = clientInstance
 
   useEffect(() => {
     console.log("Remix Etherscan loading...")
@@ -33,54 +33,58 @@ const App = () => {
     loadClient()
   }, [])
 
-  useEffect(
-    () => {
-      if (!clientInstance) {
-        return
-      }
+  useEffect(() => {
+    if (!clientInstance) {
+      return
+    }
 
-      const receiptsNotVerified: Receipt[] = receipts.filter((item: Receipt) => {
-        return item.status !== "Verified"
-      })
+    const receiptsNotVerified: Receipt[] = receipts.filter((item: Receipt) => {
+      return item.status !== "Verified"
+    })
 
-      if (receiptsNotVerified.length > 0) {
-        let timer1 = setInterval(() => {
-          receiptsNotVerified.forEach(async (item) => {
-            if (!clientInstanceRef.current) {
-              return
-            }
-            const network = await getNetworkName(clientInstanceRef.current);
-            if (network === "vm") {
-              return
-            }
-            const status = await getReceiptStatus(item.guid, apiKey, getEtherScanApi(network))
-            if (status === "Pass - Verified") {
-              const newReceipts = receipts.map((currentReceipt: Receipt) => {
-                if (currentReceipt.guid === item.guid) {
-                  return {
-                    ...currentReceipt,
-                    status: "Verified"
-                  }
+    if (receiptsNotVerified.length > 0) {
+      let timer1 = setInterval(() => {
+        receiptsNotVerified.forEach(async (item) => {
+          if (!clientInstanceRef.current) {
+            return
+          }
+          const network = await getNetworkName(clientInstanceRef.current)
+          if (network === "vm") {
+            return
+          }
+          const status = await getReceiptStatus(
+            item.guid,
+            apiKey,
+            getEtherScanApi(network)
+          )
+          if (status === "Pass - Verified") {
+            const newReceipts = receipts.map((currentReceipt: Receipt) => {
+              if (currentReceipt.guid === item.guid) {
+                return {
+                  ...currentReceipt,
+                  status: "Verified",
                 }
-                return currentReceipt
-              })
-
-              clearInterval(timer1)
-
-              setReceipts(newReceipts)
-
-              return () => {
-                clearInterval(timer1)
               }
+              return currentReceipt
+            })
+
+            clearInterval(timer1)
+
+            setReceipts(newReceipts)
+
+            return () => {
+              clearInterval(timer1)
             }
-          })
-        }, 5000)
-      }
-    },
-    [receipts, clientInstance])
+          }
+        })
+      }, 5000)
+    }
+  }, [receipts, clientInstance])
 
   return (
-    <AppContext.Provider value={{ apiKey, setAPIKey, clientInstance, receipts, setReceipts }}>
+    <AppContext.Provider
+      value={{ apiKey, setAPIKey, clientInstance, receipts, setReceipts }}
+    >
       <Routes />
     </AppContext.Provider>
   )
