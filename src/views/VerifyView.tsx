@@ -10,7 +10,7 @@ import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+    PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
 }
@@ -21,7 +21,11 @@ interface FormValues {
   contractAddress: string
 }
 
-export const VerifyView: React.FC<Props> = ({ apiKey, client, onVerifiedContract }) => {
+export const VerifyView: React.FC<Props> = ({
+  apiKey,
+  client,
+  onVerifiedContract,
+}) => {
   const onVerifyContract = async (values: FormValues) => {
     const compilationResult = (await client.call(
       "solidity",
@@ -81,14 +85,18 @@ export const VerifyView: React.FC<Props> = ({ apiKey, client, onVerifiedContract
         })
         const response = await fetch(etherscanApi, { method: "POST", body })
         const { message, result, status } = await response.json()
-        console.log("Message returned", message, result, status)
+
         if (message === "OK" && status === "1") {
           resetAfter10Seconds()
-          const status = await getReceiptStatus(result, apiKey, etherscanApi)
+          const receiptStatus = await getReceiptStatus(
+            result,
+            apiKey,
+            etherscanApi
+          )
 
           onVerifiedContract({
             guid: result,
-            status
+            status: receiptStatus,
           })
           return `Contract verified correctly <br> Receipt GUID ${result}`
         }

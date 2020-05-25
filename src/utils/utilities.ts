@@ -19,7 +19,11 @@ export const getNetworkName = async (client: RemixClient) => {
   return name === "görli" ? "goerli" : name
 }
 
-export const getReceiptStatus = async (receiptGuid: string, apiKey: string, etherscanApi: string) => {
+export const getReceiptStatus = async (
+  receiptGuid: string,
+  apiKey: string,
+  etherscanApi: string
+) => {
   const params = `guid=${receiptGuid}&module=contract&action=checkverifystatus&apiKey=${apiKey}`
   try {
     const response = await fetch(`${etherscanApi}?${params}`, {

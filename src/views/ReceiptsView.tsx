@@ -25,7 +25,11 @@ export const ReceiptsView: React.FC = () => {
         return
       }
       const etherscanApi = getEtherScanApi(network)
-      const result = await getReceiptStatus(values.receiptGuid, apiKey, etherscanApi)
+      const result = await getReceiptStatus(
+        values.receiptGuid,
+        apiKey,
+        etherscanApi
+      )
       setResults(result)
     } catch (error) {
       setResults(error.message)
@@ -81,7 +85,9 @@ export const ReceiptsView: React.FC = () => {
           />
 
           <ReceiptsTable receipts={receipts} />
-          <div style={{ display: "block", textAlign: "center", marginTop: "1em" }}>
+          <div
+            style={{ display: "block", textAlign: "center", marginTop: "1em" }}
+          >
             <Link to="/">Go back</Link>
           </div>
         </div>
@@ -102,13 +108,18 @@ const ReceiptsTable: React.FC<{ receipts: Receipt[] }> = ({ receipts }) => {
           </tr>
         </thead>
         <tbody>
-          {receipts && receipts.length > 0 && receipts.map((item: Receipt, index) => {
-            return (<tr key={item.guid}>
-              <td>{item.guid}</td>
-              <td>{item.status}</td>
-            </tr>)
-          })}
+          {receipts &&
+            receipts.length > 0 &&
+            receipts.map((item: Receipt, index) => {
+              return (
+                <tr key={item.guid}>
+                  <td>{item.guid}</td>
+                  <td>{item.status}</td>
+                </tr>
+              )
+            })}
         </tbody>
-      </table></div>
+      </table>
+    </div>
   )
 }
