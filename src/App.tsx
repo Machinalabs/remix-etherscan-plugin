@@ -79,7 +79,7 @@ const App = () => {
         })
       }, 5000)
     }
-  }, [receipts, clientInstance])
+  }, [receipts, clientInstance, apiKey, setReceipts])
 
   return (
     <AppContext.Provider

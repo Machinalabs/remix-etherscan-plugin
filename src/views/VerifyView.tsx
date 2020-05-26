@@ -10,7 +10,7 @@ import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
 }
@@ -26,17 +26,18 @@ export const VerifyView: React.FC<Props> = ({
   client,
   onVerifiedContract,
 }) => {
+
+  const [results, setResults] = useState("")
+
   const onVerifyContract = async (values: FormValues) => {
     const compilationResult = (await client.call(
       "solidity",
       "getCompilationResult"
     )) as any
 
-    console.log("Compilation results", compilationResult)
-
     if (!compilationResult) {
       throw new Error("no compilation result available")
-    } // TODO handle better, Maybe create a logger and a submit issue button that captures the error and send directly to my dashboard...
+    }
 
     const contractArguments = values.contractArguments.replace("0x", "")
 
@@ -129,12 +130,8 @@ export const VerifyView: React.FC<Props> = ({
       compilationResult
     )
 
-    console.log("Verification result", verificationResult)
-
     setResults(verificationResult)
   }
-
-  const [results, setResults] = useState("")
 
   return (
     <div>
