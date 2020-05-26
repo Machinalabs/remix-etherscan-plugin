@@ -10,7 +10,7 @@ import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+    PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
 }
@@ -26,7 +26,6 @@ export const VerifyView: React.FC<Props> = ({
   client,
   onVerifiedContract,
 }) => {
-
   const [results, setResults] = useState("")
 
   const onVerifyContract = async (values: FormValues) => {
