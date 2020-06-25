@@ -8,25 +8,19 @@ import { Routes } from "./routes"
 import { useLocalStorage } from "./hooks/useLocalStorage"
 
 import { getReceiptStatus, getEtherScanApi, getNetworkName } from "./utils"
-import { Receipt, Contract } from "./types"
+import { Receipt } from "./types"
 
 import "./App.css"
 
 const devMode = { port: 8080 }
 
-export const getNewContracts = (compilationResult: CompilationResult) => {
+export const getNewContractNames = (compilationResult: CompilationResult) => {
   const compiledContracts = compilationResult.contracts
-  let result: Contract[] = []
+  let result: string[] = []
 
   for (const file of Object.keys(compiledContracts)) {
     const newContractNames = Object.keys(compiledContracts[file])
-    const newContracts = newContractNames.map((item) => {
-      const result: Contract = {
-        name: item
-      }
-      return result
-    })
-    result = [...result, ...newContracts]
+    result = [...result, ...newContractNames]
   }
 
   return result
@@ -40,6 +34,8 @@ const App = () => {
   const [contracts, setContracts] = useLocalStorage("available-contracts", [])
   const clientInstanceRef = useRef(clientInstance)
   clientInstanceRef.current = clientInstance
+  const contractsRef = useRef(contracts)
+  contractsRef.current = contracts
 
   useEffect(() => {
     console.log("Remix Etherscan loading...")
@@ -51,14 +47,16 @@ const App = () => {
 
       client.solidity.on('compilationFinished', (fileName: string, source: CompilationFileSources, languageVersion: string, data: CompilationResult) => {
         console.log("New compilation received")
-        const newContracts = getNewContracts(data)
+        const newContractsNames = getNewContractNames(data)
 
-        const newContractsToSave = [
-          ...contracts,
-          ...newContracts
+        const newContractsToSave: string[] = [
+          ...contractsRef.current,
+          ...newContractsNames
         ]
 
-        setContracts(newContractsToSave)
+        const uniqueContracts: string[] = [...new Set(newContractsToSave)];
+
+        setContracts(uniqueContracts)
       })
     }
 

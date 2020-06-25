@@ -1,7 +1,7 @@
 import React from "react"
 import { PluginApi, IRemixApi, Api, PluginClient } from "@remixproject/plugin"
 
-import { Receipt, Contract } from "./types"
+import { Receipt } from "./types"
 
 export const AppContext = React.createContext({
   apiKey: "",
@@ -14,8 +14,8 @@ export const AppContext = React.createContext({
   setReceipts: (receipts: Receipt[]) => {
     console.log("Calling Set Receipts")
   },
-  contracts: [] as Contract[],
-  setContracts: (contracts: Contract[]) => {
-    console.log("Calling Set Contracts")
+  contracts: [] as string[],
+  setContracts: (contracts: string[]) => {
+    console.log("Calling Set Contract Names")
   },
 })

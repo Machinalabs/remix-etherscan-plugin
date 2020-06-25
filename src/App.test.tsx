@@ -1,6 +1,6 @@
 import React from "react"
 import { render } from "@testing-library/react"
-import App, { getNewContracts } from "./App"
+import App, { getNewContractNames } from "./App"
 import { CompilationResult, UserMethodList, BytecodeObject, UserDocumentation, DeveloperDocumentation } from "@remixproject/plugin"
 
 test('getNewContracts', () => {
@@ -24,9 +24,9 @@ test('getNewContracts', () => {
     }
   }
 
-  const result = getNewContracts(fakeCompilationResult)
+  const result = getNewContractNames(fakeCompilationResult)
 
   expect(result).toHaveLength(1)
-  expect(result[0].name).toEqual("SafeMath")
+  expect(result[0]).toEqual("SafeMath")
 })
 

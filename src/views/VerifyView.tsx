@@ -6,14 +6,14 @@ import { Link } from "react-router-dom"
 
 import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
-import { Receipt, Contract } from "../types"
+import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
   PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
-  contracts: Contract[]
+  contracts: string[]
 }
 
 interface FormValues {
@@ -169,12 +169,9 @@ export const VerifyView: React.FC<Props> = ({
                     ? "form-control form-control-sm is-invalid"
                     : "form-control form-control-sm"
                 }
-                type="select"
-                name="contractName">
+                name="contractName" >
                 <option disabled selected value="">Select a contract</option>
-                {contracts && contracts.map((item) => {
-                  return <option key={item.name} value={item.name}>{item.name}</option>
-                })}
+                {contracts.map(item => <option key={item} value={item}>{item}</option>)}
               </Field>
               <ErrorMessage
                 className="invalid-feedback"
