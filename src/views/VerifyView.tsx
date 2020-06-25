@@ -6,13 +6,14 @@ import { Link } from "react-router-dom"
 
 import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
-import { Receipt } from "../types"
+import { Receipt, Contract } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
+  contracts: Contract[]
 }
 
 interface FormValues {
@@ -24,6 +25,7 @@ interface FormValues {
 export const VerifyView: React.FC<Props> = ({
   apiKey,
   client,
+  contracts,
   onVerifiedContract,
 }) => {
   const [results, setResults] = useState("")
@@ -142,6 +144,7 @@ export const VerifyView: React.FC<Props> = ({
         }}
         validate={(values) => {
           const errors = {} as any
+          console.log("contracts", contracts)
           if (!values.contractName) {
             errors.contractName = "Required"
           }

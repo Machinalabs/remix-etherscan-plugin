@@ -11,7 +11,7 @@ export const HomeView: React.FC = () => {
   // const [hasError, setHasError] = useState(false)
   return (
     <AppContext.Consumer>
-      {({ apiKey, clientInstance, setReceipts, receipts }) =>
+      {({ apiKey, clientInstance, setReceipts, receipts, contracts }) =>
         !apiKey ? (
           <Redirect
             to={{
@@ -20,16 +20,17 @@ export const HomeView: React.FC = () => {
             }}
           />
         ) : (
-          <VerifyView
-            client={clientInstance}
-            apiKey={apiKey}
-            onVerifiedContract={(receipt: Receipt) => {
-              const newReceipts = [...receipts, receipt]
+            <VerifyView
+              contracts={contracts}
+              client={clientInstance}
+              apiKey={apiKey}
+              onVerifiedContract={(receipt: Receipt) => {
+                const newReceipts = [...receipts, receipt]
 
-              setReceipts(newReceipts)
-            }}
-          />
-        )
+                setReceipts(newReceipts)
+              }}
+            />
+          )
       }
     </AppContext.Consumer>
   )

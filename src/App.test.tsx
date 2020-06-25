@@ -1,10 +1,32 @@
 import React from "react"
 import { render } from "@testing-library/react"
-import App from "./App"
+import App, { getNewContracts } from "./App"
+import { CompilationResult, UserMethodList, BytecodeObject, UserDocumentation, DeveloperDocumentation } from "@remixproject/plugin"
 
-test("renders learn react link", () => {
-  const { getByText } = render(<App />)
-  const linkElement = getByText(/Please Enter your API key/i)
+test('getNewContracts', () => {
+  const fakeCompilationResult: CompilationResult = {
+    "sources": {} as any,
+    "contracts":
+    {
+      "browser/SafeMath.sol":
+      {
+        "SafeMath":
+        {
+          abi: [],
+          metadata: "",
+          devdoc: {} as DeveloperDocumentation,
+          userdoc: {} as UserDocumentation,
+          ir: "",
+          evm: {} as any,
+          ewasm: {} as any
+        }
+      }
+    }
+  }
 
-  expect(linkElement).toBeInTheDocument()
+  const result = getNewContracts(fakeCompilationResult)
+
+  expect(result).toHaveLength(1)
+  expect(result[0].name).toEqual("SafeMath")
 })
+
