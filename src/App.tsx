@@ -31,7 +31,7 @@ const App = () => {
   const [apiKey, setAPIKey] = useLocalStorage("apiKey", "")
   const [clientInstance, setClientInstance] = useState(undefined as any)
   const [receipts, setReceipts] = useLocalStorage("receipts", [])
-  const [contracts, setContracts] = useLocalStorage("available-contracts", [])
+  const [contracts, setContracts] = useState([] as string[])
   const clientInstanceRef = useRef(clientInstance)
   clientInstanceRef.current = clientInstance
   const contractsRef = useRef(contracts)

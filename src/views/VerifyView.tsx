@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import { PluginApi, IRemixApi, PluginClient, Api } from "@remixproject/plugin"
+import { PluginApi, IRemixApi, PluginClient, Api, CompilationResult } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
 
@@ -20,6 +20,38 @@ interface FormValues {
   contractName: string
   contractArguments: string
   contractAddress: string
+}
+
+export const getContractFileName = (compilationResult: CompilationResult, contractName: string) => {
+  const compiledContracts = compilationResult.contracts
+  let fileName = ""
+
+  for (const file of Object.keys(compiledContracts)) {
+    for (const contract of Object.keys(compiledContracts[file])) {
+      if (contract === contractName) {
+        fileName = file
+        break
+      }
+    }
+  }
+  return fileName
+}
+
+export const getContractMetadata = (compilationResult: CompilationResult, contractName: string) => {
+  const compiledContracts = compilationResult.contracts
+  let contractMetadata = ""
+
+  for (const file of Object.keys(compiledContracts)) {
+    for (const contract of Object.keys(compiledContracts[file])) {
+      if (contract === contractName) {
+        contractMetadata = compiledContracts[file][contract].metadata
+        if (contractMetadata) {
+          break
+        }
+      }
+    }
+  }
+  return contractMetadata
 }
 
 export const VerifyView: React.FC<Props> = ({
@@ -55,31 +87,35 @@ export const VerifyView: React.FC<Props> = ({
       }
       const etherscanApi = getEtherScanApi(network)
 
-      const fileName = compilationResultParam.source.target // Check if it is not empty
-
-      const contractMetadata =
-        compilationResultParam.data.contracts[fileName][contractName].metadata
-      const contractMetadataParsed = JSON.parse(contractMetadata)
-
-      const data: { [key: string]: string | any } = {
-        apikey: apiKeyParam, // A valid API-Key is required
-        module: "contract", // Do not change
-        action: "verifysourcecode", // Do not change
-        contractaddress: contractAddress, // Contract Address starts with 0x...
-        sourceCode: compilationResultParam.source.sources[fileName].content, // Contract Source Code (Flattened if necessary)
-        contractname: contractName,
-        compilerversion: `v${contractMetadataParsed.compiler.version}`, // see http://etherscan.io/solcversions for list of support versions
-        optimizationUsed: contractMetadataParsed.settings.optimizer.enabled
-          ? 1
-          : 0, // 0 = Optimization used, 1 = No Optimization
-        runs: contractMetadataParsed.settings.optimizer.runs, // set to 200 as default unless otherwise
-        constructorArguements: contractArgumentsParam, // if applicable
-      }
-
-      const body = new FormData()
-      Object.keys(data).forEach((key) => body.append(key, data[key]))
-
       try {
+        const contractMetadata = getContractMetadata(compilationResultParam.data, contractName)
+
+        if (!contractMetadata) {
+          return 'Please recompile contract'
+        }
+
+        const contractMetadataParsed = JSON.parse(contractMetadata)
+
+        const fileName = getContractFileName(compilationResultParam.data, contractName)
+
+        const data: { [key: string]: string | any } = {
+          apikey: apiKeyParam, // A valid API-Key is required
+          module: "contract", // Do not change
+          action: "verifysourcecode", // Do not change
+          contractaddress: contractAddress, // Contract Address starts with 0x...
+          sourceCode: compilationResultParam.source.sources[fileName].content, // Contract Source Code (Flattened if necessary)
+          contractname: contractName,
+          compilerversion: `v${contractMetadataParsed.compiler.version}`, // see http://etherscan.io/solcversions for list of support versions
+          optimizationUsed: contractMetadataParsed.settings.optimizer.enabled
+            ? 1
+            : 0, // 0 = Optimization used, 1 = No Optimization
+          runs: contractMetadataParsed.settings.optimizer.runs, // set to 200 as default unless otherwise
+          constructorArguements: contractArgumentsParam, // if applicable
+        }
+
+        const body = new FormData()
+        Object.keys(data).forEach((key) => body.append(key, data[key]))
+
         client.emit("statusChanged", {
           key: "loading",
           type: "info",
@@ -120,7 +156,9 @@ export const VerifyView: React.FC<Props> = ({
     const resetAfter10Seconds = () => {
       setTimeout(() => {
         client.emit("statusChanged", { key: "none" })
+        setResults("")
       }, 10000)
+
     }
 
     const verificationResult = await verify(
@@ -169,8 +207,8 @@ export const VerifyView: React.FC<Props> = ({
                     ? "form-control form-control-sm is-invalid"
                     : "form-control form-control-sm"
                 }
-                name="contractName" >
-                <option disabled selected value="">Select a contract</option>
+                name="contractName">
+                <option disabled value="">Select a contract</option>
                 {contracts.map(item => <option key={item} value={item}>{item}</option>)}
               </Field>
               <ErrorMessage

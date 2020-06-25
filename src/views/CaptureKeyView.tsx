@@ -22,8 +22,6 @@ export const CaptureKeyView: React.FC = () => {
             return errors
           }}
           onSubmit={(values) => {
-            console.log("Saving new API key value")
-            console.log("STATE", location.state)
             setAPIKey(values.apiKey)
             history.push((location.state as any).from)
           }}
