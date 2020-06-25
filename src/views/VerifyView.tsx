@@ -144,7 +144,6 @@ export const VerifyView: React.FC<Props> = ({
         }}
         validate={(values) => {
           const errors = {} as any
-          console.log("contracts", contracts)
           if (!values.contractName) {
             errors.contractName = "Required"
           }
@@ -162,17 +161,21 @@ export const VerifyView: React.FC<Props> = ({
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <h6>Verify your smart contracts</h6>
-              <label htmlFor="contractName">Contract Name</label>
+              <label htmlFor="contractName">Contract</label>
               <Field
+                as="select"
                 className={
                   errors.contractName && touched.contractName
                     ? "form-control form-control-sm is-invalid"
                     : "form-control form-control-sm"
                 }
-                type="text"
-                name="contractName"
-                placeholder="i.e. Ballot"
-              />
+                type="select"
+                name="contractName">
+                <option disabled selected value="">Select a contract</option>
+                {contracts && contracts.map((item) => {
+                  return <option key={item.name} value={item.name}>{item.name}</option>
+                })}
+              </Field>
               <ErrorMessage
                 className="invalid-feedback"
                 name="contractName"
