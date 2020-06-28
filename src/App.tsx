@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
 
-import { createIframeClient, CompilationFileSources, CompilationResult } from "@remixproject/plugin"
+import {
+  createIframeClient,
+  CompilationFileSources,
+  CompilationResult,
+} from "@remixproject/plugin"
 
 import { AppContext } from "./AppContext"
 import { Routes } from "./routes"
@@ -26,7 +30,6 @@ export const getNewContractNames = (compilationResult: CompilationResult) => {
   return result
 }
 
-
 const App = () => {
   const [apiKey, setAPIKey] = useLocalStorage("apiKey", "")
   const [clientInstance, setClientInstance] = useState(undefined as any)
@@ -45,19 +48,27 @@ const App = () => {
       setClientInstance(client)
       console.log("Remix Etherscan Plugin has been loaded")
 
-      client.solidity.on('compilationFinished', (fileName: string, source: CompilationFileSources, languageVersion: string, data: CompilationResult) => {
-        console.log("New compilation received")
-        const newContractsNames = getNewContractNames(data)
+      client.solidity.on(
+        "compilationFinished",
+        (
+          fileName: string,
+          source: CompilationFileSources,
+          languageVersion: string,
+          data: CompilationResult
+        ) => {
+          console.log("New compilation received")
+          const newContractsNames = getNewContractNames(data)
 
-        const newContractsToSave: string[] = [
-          ...contractsRef.current,
-          ...newContractsNames
-        ]
+          const newContractsToSave: string[] = [
+            ...contractsRef.current,
+            ...newContractsNames,
+          ]
 
-        const uniqueContracts: string[] = [...new Set(newContractsToSave)];
+          const uniqueContracts: string[] = [...new Set(newContractsToSave)]
 
-        setContracts(uniqueContracts)
-      })
+          setContracts(uniqueContracts)
+        }
+      )
     }
 
     loadClient()
@@ -113,7 +124,16 @@ const App = () => {
 
   return (
     <AppContext.Provider
-      value={{ apiKey, setAPIKey, clientInstance, receipts, setReceipts, contracts, setContracts }}>
+      value={{
+        apiKey,
+        setAPIKey,
+        clientInstance,
+        receipts,
+        setReceipts,
+        contracts,
+        setContracts,
+      }}
+    >
       <Routes />
     </AppContext.Provider>
   )

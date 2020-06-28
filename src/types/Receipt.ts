@@ -4,4 +4,3 @@ export interface Receipt {
   guid: string
   status: ReceiptStatus
 }
-

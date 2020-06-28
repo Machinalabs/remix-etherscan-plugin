@@ -1,6 +1,12 @@
 import React, { useState } from "react"
 
-import { PluginApi, IRemixApi, PluginClient, Api, CompilationResult } from "@remixproject/plugin"
+import {
+  PluginApi,
+  IRemixApi,
+  PluginClient,
+  Api,
+  CompilationResult,
+} from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 import { Link } from "react-router-dom"
 
@@ -10,7 +16,7 @@ import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+    PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
   contracts: string[]
@@ -22,7 +28,10 @@ interface FormValues {
   contractAddress: string
 }
 
-export const getContractFileName = (compilationResult: CompilationResult, contractName: string) => {
+export const getContractFileName = (
+  compilationResult: CompilationResult,
+  contractName: string
+) => {
   const compiledContracts = compilationResult.contracts
   let fileName = ""
 
@@ -37,7 +46,10 @@ export const getContractFileName = (compilationResult: CompilationResult, contra
   return fileName
 }
 
-export const getContractMetadata = (compilationResult: CompilationResult, contractName: string) => {
+export const getContractMetadata = (
+  compilationResult: CompilationResult,
+  contractName: string
+) => {
   const compiledContracts = compilationResult.contracts
   let contractMetadata = ""
 
@@ -88,15 +100,21 @@ export const VerifyView: React.FC<Props> = ({
       const etherscanApi = getEtherScanApi(network)
 
       try {
-        const contractMetadata = getContractMetadata(compilationResultParam.data, contractName)
+        const contractMetadata = getContractMetadata(
+          compilationResultParam.data,
+          contractName
+        )
 
         if (!contractMetadata) {
-          return 'Please recompile contract'
+          return "Please recompile contract"
         }
 
         const contractMetadataParsed = JSON.parse(contractMetadata)
 
-        const fileName = getContractFileName(compilationResultParam.data, contractName)
+        const fileName = getContractFileName(
+          compilationResultParam.data,
+          contractName
+        )
 
         const data: { [key: string]: string | any } = {
           apikey: apiKeyParam, // A valid API-Key is required
@@ -158,7 +176,6 @@ export const VerifyView: React.FC<Props> = ({
         client.emit("statusChanged", { key: "none" })
         setResults("")
       }, 10000)
-
     }
 
     const verificationResult = await verify(
@@ -207,9 +224,16 @@ export const VerifyView: React.FC<Props> = ({
                     ? "form-control form-control-sm is-invalid"
                     : "form-control form-control-sm"
                 }
-                name="contractName">
-                <option disabled value="">Select a contract</option>
-                {contracts.map(item => <option key={item} value={item}>{item}</option>)}
+                name="contractName"
+              >
+                <option disabled={true} value="">
+                  Select a contract
+                </option>
+                {contracts.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
               </Field>
               <ErrorMessage
                 className="invalid-feedback"

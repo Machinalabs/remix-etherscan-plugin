@@ -20,17 +20,17 @@ export const HomeView: React.FC = () => {
             }}
           />
         ) : (
-            <VerifyView
-              contracts={contracts}
-              client={clientInstance}
-              apiKey={apiKey}
-              onVerifiedContract={(receipt: Receipt) => {
-                const newReceipts = [...receipts, receipt]
+          <VerifyView
+            contracts={contracts}
+            client={clientInstance}
+            apiKey={apiKey}
+            onVerifiedContract={(receipt: Receipt) => {
+              const newReceipts = [...receipts, receipt]
 
-                setReceipts(newReceipts)
-              }}
-            />
-          )
+              setReceipts(newReceipts)
+            }}
+          />
+        )
       }
     </AppContext.Consumer>
   )
