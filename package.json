@@ -27,7 +27,7 @@
     "test:ci": "CI=true react-scripts test",
     "tslint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
     "check-formatting": "prettier --write --list-different './src/**/*.tsx'",
-    "deploy": "yarn build && surge --project ./build --domain remix-etherscan-gas-v2.surge.sh"
+    "deploy": "yarn build && surge --project ./build --domain machinalabs-remix-etherscan-plugin-v2.surge.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
