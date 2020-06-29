@@ -7,9 +7,9 @@ A plugin to verify contracts in Etherscan
 ### Install
 
 ```
-git clone git@github.com:Machinalabs/remix-etherscan.git
+$ git clone git@github.com:Machinalabs/remix-etherscan-plugin.git
 
-yarn
+$ yarn
 
 ```
 
