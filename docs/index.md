@@ -1,17 +1,17 @@
-# Welcome to MkDocs
+# Remix Etherscan plugin
 
-For full testing documentation visit [mkdocs.org](https://mkdocs.org).
+The Remix Etherscan plugin allow you to verify smart contracts in Etherscan. 
 
-## Commands
+## Activate
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
+To be able to work with the plugin go to the plugins section and find Etherscan, then activate it.
 
-## Project layout
+## How to verify smart contracts
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+To verify smart contracts, the first thing you need to do is to compile smart contracts.
+
+Once the contracts are compiled, go to the Etherscan plugin and you can select the smart contract you wish to verify. Then, include parameters if required and just click verify.
+
+## Issues
+
+If you have any issues, please feel free to create an issue in our [Github repository](https://github.com/Machinalabs/remix-etherscan-plugin/issues).
