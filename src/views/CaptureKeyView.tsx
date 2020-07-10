@@ -11,8 +11,13 @@ interface Props {
 }
 const CancelButton: React.FC<Props> = (props) => {
   return (
-    <button {...props} style={{ padding: "0.25rem 0.4rem", width: "7em" }}
-      className="btn btn-danger">Cancel</button>
+    <button
+      {...props}
+      style={{ padding: "0.25rem 0.4rem", width: "7em" }}
+      className="btn btn-danger"
+    >
+      Cancel
+    </button>
   )
 }
 
@@ -59,9 +64,11 @@ export const CaptureKeyView: React.FC = () => {
 
               <div>
                 <SubmitButton text="Save API key" />
-                <CancelButton onClick={() => {
-                  history.push((location.state as any).from)
-                }} />
+                <CancelButton
+                  onClick={() => {
+                    history.push((location.state as any).from)
+                  }}
+                />
               </div>
             </form>
           )}
