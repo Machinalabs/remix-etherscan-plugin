@@ -39,9 +39,7 @@ export const Routes = () => (
         component={ReceiptsView}
         from="/receipts"
       />
-      <Route path="/settings">
-        <CaptureKeyView />
-      </Route>
+      <RouteWithHeader path="/settings" from="/settings" component={CaptureKeyView} />
     </Switch>
   </Router>
 )

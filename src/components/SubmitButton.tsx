@@ -11,7 +11,7 @@ export const SubmitButton: React.FC<Props> = ({
 }) => {
   return (
     <button
-      style={{ padding: "0.25rem 0.4rem" }}
+      style={{ padding: "0.25rem 0.4rem", marginRight: "0.5em" }}
       type="submit"
       className="btn btn-primary"
       disabled={isSubmitting}

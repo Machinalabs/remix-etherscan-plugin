@@ -6,6 +6,16 @@ import { useHistory, useLocation } from "react-router-dom"
 import { AppContext } from "../AppContext"
 import { SubmitButton } from "../components"
 
+interface Props {
+  onClick: any
+}
+const CancelButton: React.FC<Props> = (props) => {
+  return (
+    <button {...props} style={{ padding: "0.25rem 0.4rem", width: "7em" }}
+      className="btn btn-danger">Cancel</button>
+  )
+}
+
 export const CaptureKeyView: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
@@ -47,7 +57,12 @@ export const CaptureKeyView: React.FC = () => {
                 />
               </div>
 
-              <SubmitButton text="Save API key" />
+              <div>
+                <SubmitButton text="Save API key" />
+                <CancelButton onClick={() => {
+                  history.push((location.state as any).from)
+                }} />
+              </div>
             </form>
           )}
         </Formik>
