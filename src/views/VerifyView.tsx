@@ -8,7 +8,6 @@ import {
   CompilationResult,
 } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
-import { Link } from "react-router-dom"
 
 import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
@@ -16,7 +15,7 @@ import { Receipt } from "../types"
 
 interface Props {
   client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  PluginClient<Api, Readonly<IRemixApi>>
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
   contracts: string[]
