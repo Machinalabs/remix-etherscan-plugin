@@ -12,7 +12,7 @@ import { Routes } from "./routes"
 import { useLocalStorage } from "./hooks/useLocalStorage"
 
 import { getReceiptStatus, getEtherScanApi, getNetworkName } from "./utils"
-import { Receipt } from "./types"
+import { Receipt, ThemeType } from "./types"
 
 import "./App.css"
 
@@ -35,6 +35,8 @@ const App = () => {
   const [clientInstance, setClientInstance] = useState(undefined as any)
   const [receipts, setReceipts] = useLocalStorage("receipts", [])
   const [contracts, setContracts] = useState([] as string[])
+  const [themeType, setThemeType] = useState("dark" as ThemeType)
+
   const clientInstanceRef = useRef(clientInstance)
   clientInstanceRef.current = clientInstance
   const contractsRef = useRef(contracts)
@@ -69,6 +71,12 @@ const App = () => {
           setContracts(uniqueContracts)
         }
       )
+
+      const currentTheme = await client.call('theme', 'currentTheme')
+      setThemeType(currentTheme.quality)
+      client.on('theme', 'themeChanged', (theme) => {
+        setThemeType(theme.quality)
+      })
     }
 
     loadClient()
@@ -132,6 +140,8 @@ const App = () => {
         setReceipts,
         contracts,
         setContracts,
+        themeType,
+        setThemeType
       }}
     >
       <Routes />

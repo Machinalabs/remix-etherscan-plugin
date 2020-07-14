@@ -1,6 +1,8 @@
 import React from "react"
 
 import { NavLink } from "react-router-dom"
+import { AppContext } from "../AppContext"
+import { ThemeType } from "../types"
 
 interface Props {
   title?: string
@@ -10,15 +12,14 @@ interface Props {
 
 interface IconProps {
   from: string
+  themeType: ThemeType
 }
 
-const HomeIcon: React.FC<IconProps> = ({ from }: IconProps) => {
+const HomeIcon: React.FC<IconProps> = ({ from, themeType }: IconProps) => {
   return (
     <NavLink
       exact={true}
-      activeStyle={{
-        filter: "invert(0) grayscale(1) brightness(0%)",
-      }}
+      activeStyle={getStyleFilterIcon(themeType)}
       data-toggle="tooltip"
       data-placement="top"
       title="Home"
@@ -29,6 +30,8 @@ const HomeIcon: React.FC<IconProps> = ({ from }: IconProps) => {
       style={{ marginRight: "0.4em" }}
     >
       <svg
+        style={{ filter: "invert(0.5)" }}
+
         width="1em"
         height="1em"
         viewBox="0 0 16 16"
@@ -46,12 +49,10 @@ const HomeIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   )
 }
 
-const SettingsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
+const SettingsIcon: React.FC<IconProps> = ({ from, themeType }: IconProps) => {
   return (
     <NavLink
-      activeStyle={{
-        filter: "invert(0) grayscale(1) brightness(0%)",
-      }}
+      activeStyle={getStyleFilterIcon(themeType)}
       data-toggle="tooltip"
       data-placement="top"
       title="Settings"
@@ -61,6 +62,7 @@ const SettingsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
       }}
     >
       <svg
+        style={{ filter: "invert(0.5)" }}
         width="1em"
         height="1em"
         viewBox="0 0 16 16"
@@ -82,12 +84,18 @@ const SettingsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   )
 }
 
-const ReceiptsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
+const getStyleFilterIcon = (themeType: ThemeType) => {
+  const invert = themeType === 'dark' ? 1 : 0
+  const brightness = themeType === 'dark' ? '150' : '0' // should be >100 for icons with color
+  return {
+    filter: `invert(${invert}) grayscale(1) brightness(${brightness}%)`
+  }
+}
+
+const ReceiptsIcon: React.FC<IconProps> = ({ from, themeType }: IconProps) => {
   return (
     <NavLink
-      activeStyle={{
-        filter: "invert(0) grayscale(1) brightness(0%)",
-      }}
+      activeStyle={getStyleFilterIcon(themeType)}
       data-toggle="tooltip"
       data-placement="top"
       title="Receipts"
@@ -98,6 +106,7 @@ const ReceiptsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
       style={{ marginRight: "0.4em" }}
     >
       <svg
+        style={{ filter: "invert(0.5)" }}
         width="1em"
         height="1em"
         viewBox="0 0 16 16"
@@ -115,7 +124,7 @@ const ReceiptsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
           d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"
         />
       </svg>
-    </NavLink>
+    </NavLink >
   )
 }
 export const HeaderWithSettings: React.FC<Props> = ({
@@ -124,15 +133,19 @@ export const HeaderWithSettings: React.FC<Props> = ({
   from,
 }) => {
   return (
-    <div>
-      <h6>{title}</h6>
-      <div style={{ float: "right" }}>
-        <HomeIcon from={from} />
+    <AppContext.Consumer>
+      {({ themeType }) => (
+        <div>
+          <h6>{title}</h6>
+          <div style={{ float: "right" }}>
+            <HomeIcon from={from} themeType={themeType} />
 
-        <ReceiptsIcon from={from} />
+            <ReceiptsIcon from={from} themeType={themeType} />
 
-        <SettingsIcon from={from} />
-      </div>
-    </div>
+            <SettingsIcon from={from} themeType={themeType} />
+          </div>
+        </div>
+      )}
+    </AppContext.Consumer>
   )
 }
