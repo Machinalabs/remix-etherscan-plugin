@@ -85,11 +85,6 @@ export const ReceiptsView: React.FC = () => {
           />
 
           <ReceiptsTable receipts={receipts} />
-          <div
-            style={{ display: "block", textAlign: "center", marginTop: "1em" }}
-          >
-            <Link to="/">Go back</Link>
-          </div>
         </div>
       )}
     </AppContext.Consumer>
