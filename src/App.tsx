@@ -72,9 +72,9 @@ const App = () => {
         }
       )
 
-      const currentTheme = await client.call('theme', 'currentTheme')
+      const currentTheme = await client.call("theme", "currentTheme")
       setThemeType(currentTheme.quality)
-      client.on('theme', 'themeChanged', (theme) => {
+      client.on("theme", "themeChanged", (theme) => {
         setThemeType(theme.quality)
       })
     }
@@ -141,7 +141,7 @@ const App = () => {
         contracts,
         setContracts,
         themeType,
-        setThemeType
+        setThemeType,
       }}
     >
       <Routes />

@@ -31,7 +31,6 @@ const HomeIcon: React.FC<IconProps> = ({ from, themeType }: IconProps) => {
     >
       <svg
         style={{ filter: "invert(0.5)" }}
-
         width="1em"
         height="1em"
         viewBox="0 0 16 16"
@@ -85,10 +84,10 @@ const SettingsIcon: React.FC<IconProps> = ({ from, themeType }: IconProps) => {
 }
 
 const getStyleFilterIcon = (themeType: ThemeType) => {
-  const invert = themeType === 'dark' ? 1 : 0
-  const brightness = themeType === 'dark' ? '150' : '0' // should be >100 for icons with color
+  const invert = themeType === "dark" ? 1 : 0
+  const brightness = themeType === "dark" ? "150" : "0" // should be >100 for icons with color
   return {
-    filter: `invert(${invert}) grayscale(1) brightness(${brightness}%)`
+    filter: `invert(${invert}) grayscale(1) brightness(${brightness}%)`,
   }
 }
 
@@ -124,7 +123,7 @@ const ReceiptsIcon: React.FC<IconProps> = ({ from, themeType }: IconProps) => {
           d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"
         />
       </svg>
-    </NavLink >
+    </NavLink>
   )
 }
 export const HeaderWithSettings: React.FC<Props> = ({
