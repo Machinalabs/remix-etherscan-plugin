@@ -15,11 +15,13 @@ interface IconProps {
 const HomeIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   return (
     <NavLink
-      exact
+      exact={true}
       activeStyle={{
-        filter: "invert(0) grayscale(1) brightness(0%)"
+        filter: "invert(0) grayscale(1) brightness(0%)",
       }}
-      data-toggle="tooltip" data-placement="top" title="Home"
+      data-toggle="tooltip"
+      data-placement="top"
+      title="Home"
       to={{
         pathname: "/",
         state: { from },
@@ -48,9 +50,11 @@ const SettingsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   return (
     <NavLink
       activeStyle={{
-        filter: "invert(0) grayscale(1) brightness(0%)"
+        filter: "invert(0) grayscale(1) brightness(0%)",
       }}
-      data-toggle="tooltip" data-placement="top" title="Settings"
+      data-toggle="tooltip"
+      data-placement="top"
+      title="Settings"
       to={{
         pathname: "/settings",
         state: { from },
@@ -82,9 +86,11 @@ const ReceiptsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   return (
     <NavLink
       activeStyle={{
-        filter: "invert(0) grayscale(1) brightness(0%)"
+        filter: "invert(0) grayscale(1) brightness(0%)",
       }}
-      data-toggle="tooltip" data-placement="top" title="Receipts"
+      data-toggle="tooltip"
+      data-placement="top"
+      title="Receipts"
       to={{
         pathname: "/receipts",
         state: { from },
