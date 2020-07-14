@@ -31,15 +31,17 @@ export const Routes = () => (
   <Router>
     <Switch>
       <RouteWithHeader exact path="/" component={HomeView} from="/" />
-      <Route path="/error">
+      <Route exact path="/error">
         <ErrorView />
       </Route>
       <RouteWithHeader
+        exact
         path="/receipts"
         component={ReceiptsView}
         from="/receipts"
       />
       <RouteWithHeader
+        exact
         path="/settings"
         from="/settings"
         component={CaptureKeyView}

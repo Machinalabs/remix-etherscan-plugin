@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 interface Props {
   title?: string
@@ -14,12 +14,17 @@ interface IconProps {
 
 const HomeIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   return (
-    <Link
+    <NavLink
+      exact
+      activeStyle={{
+        filter: "invert(0) grayscale(1) brightness(0%)"
+      }}
+      data-toggle="tooltip" data-placement="top" title="Home"
       to={{
         pathname: "/",
         state: { from },
       }}
-      style={{ marginRight: "0.2em" }}
+      style={{ marginRight: "0.4em" }}
     >
       <svg
         width="1em"
@@ -35,13 +40,17 @@ const HomeIcon: React.FC<IconProps> = ({ from }: IconProps) => {
           d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"
         />
       </svg>
-    </Link>
+    </NavLink>
   )
 }
 
 const SettingsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   return (
-    <Link
+    <NavLink
+      activeStyle={{
+        filter: "invert(0) grayscale(1) brightness(0%)"
+      }}
+      data-toggle="tooltip" data-placement="top" title="Settings"
       to={{
         pathname: "/settings",
         state: { from },
@@ -65,18 +74,22 @@ const SettingsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
           d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 0 0-5.86 2.929 2.929 0 0 0 0 5.858z"
         />
       </svg>
-    </Link>
+    </NavLink>
   )
 }
 
 const ReceiptsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
   return (
-    <Link
+    <NavLink
+      activeStyle={{
+        filter: "invert(0) grayscale(1) brightness(0%)"
+      }}
+      data-toggle="tooltip" data-placement="top" title="Receipts"
       to={{
         pathname: "/receipts",
         state: { from },
       }}
-      style={{ marginRight: "0.2em" }}
+      style={{ marginRight: "0.4em" }}
     >
       <svg
         width="1em"
@@ -96,7 +109,7 @@ const ReceiptsIcon: React.FC<IconProps> = ({ from }: IconProps) => {
           d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"
         />
       </svg>
-    </Link>
+    </NavLink>
   )
 }
 export const HeaderWithSettings: React.FC<Props> = ({
