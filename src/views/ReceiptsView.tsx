@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 
 import { Formik, ErrorMessage, Field } from "formik"
-import { Link } from "react-router-dom"
 import { getEtherScanApi, getNetworkName, getReceiptStatus } from "../utils"
 import { Receipt } from "../types"
 import { AppContext } from "../AppContext"
