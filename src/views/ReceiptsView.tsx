@@ -5,6 +5,7 @@ import { getEtherScanApi, getNetworkName, getReceiptStatus } from "../utils"
 import { Receipt } from "../types"
 import { AppContext } from "../AppContext"
 import { SubmitButton } from "../components"
+import { Redirect } from "react-router-dom"
 
 interface FormValues {
   receiptGuid: string
@@ -37,55 +38,64 @@ export const ReceiptsView: React.FC = () => {
 
   return (
     <AppContext.Consumer>
-      {({ apiKey, clientInstance, receipts }) => (
-        <div>
-          <Formik
-            initialValues={{ receiptGuid: "" }}
-            validate={(values) => {
-              const errors = {} as any
-              if (!values.receiptGuid) {
-                errors.receiptGuid = "Required"
-              }
-              return errors
+      {({ apiKey, clientInstance, receipts }) =>
+        !apiKey ? (
+          <Redirect
+            to={{
+              pathname: "/settings",
+              state: { from: "/" },
             }}
-            onSubmit={(values) =>
-              onGetReceiptStatus(values, clientInstance, apiKey)
-            }
-          >
-            {({ errors, touched, handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
-                <div className="form-group" style={{ marginBottom: "0.5rem" }}>
-                  <h6>Get your Receipt GUID status</h6>
-                  <label htmlFor="receiptGuid">Receipt GUID</label>
-                  <Field
-                    className={
-                      errors.receiptGuid && touched.receiptGuid
-                        ? "form-control form-control-sm is-invalid"
-                        : "form-control form-control-sm"
-                    }
-                    type="text"
-                    name="receiptGuid"
-                  />
-                  <ErrorMessage
-                    className="invalid-feedback"
-                    name="receiptGuid"
-                    component="div"
-                  />
-                </div>
-
-                <SubmitButton text="Check" />
-              </form>
-            )}
-          </Formik>
-
-          <div
-            style={{ marginTop: "2em", fontSize: "0.8em", textAlign: "center" }}
-            dangerouslySetInnerHTML={{ __html: results }}
           />
+        )
+          : (
+            <div>
+              <Formik
+                initialValues={{ receiptGuid: "" }}
+                validate={(values) => {
+                  const errors = {} as any
+                  if (!values.receiptGuid) {
+                    errors.receiptGuid = "Required"
+                  }
+                  return errors
+                }}
+                onSubmit={(values) =>
+                  onGetReceiptStatus(values, clientInstance, apiKey)
+                }
+              >
+                {({ errors, touched, handleSubmit }) => (
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group" style={{ marginBottom: "0.5rem" }}>
+                      <h6>Get your Receipt GUID status</h6>
+                      <label htmlFor="receiptGuid">Receipt GUID</label>
+                      <Field
+                        className={
+                          errors.receiptGuid && touched.receiptGuid
+                            ? "form-control form-control-sm is-invalid"
+                            : "form-control form-control-sm"
+                        }
+                        type="text"
+                        name="receiptGuid"
+                      />
+                      <ErrorMessage
+                        className="invalid-feedback"
+                        name="receiptGuid"
+                        component="div"
+                      />
+                    </div>
 
-          <ReceiptsTable receipts={receipts} />
-        </div>
-      )}
+                    <SubmitButton text="Check" />
+                  </form>
+                )}
+              </Formik>
+
+              <div
+                style={{ marginTop: "2em", fontSize: "0.8em", textAlign: "center" }}
+                dangerouslySetInnerHTML={{ __html: results }}
+              />
+
+              <ReceiptsTable receipts={receipts} />
+            </div>
+          )}
     </AppContext.Consumer>
   )
 }
