@@ -115,18 +115,26 @@ export const VerifyView: React.FC<Props> = ({
           contractName
         )
 
+        const jsonInput = {
+          language: 'Solidity',
+          sources: compilationResultParam.source.sources,
+          settings: {
+            optimizer: {
+              enabled: contractMetadataParsed.settings.optimizer.enabled,
+              runs: contractMetadataParsed.settings.optimizer.runs
+            }
+          }
+        }
+
         const data: { [key: string]: string | any } = {
           apikey: apiKeyParam, // A valid API-Key is required
           module: "contract", // Do not change
           action: "verifysourcecode", // Do not change
+          codeformat: "solidity-standard-json-input",
           contractaddress: contractAddress, // Contract Address starts with 0x...
-          sourceCode: compilationResultParam.source.sources[fileName].content, // Contract Source Code (Flattened if necessary)
-          contractname: contractName,
+          sourceCode: JSON.stringify(jsonInput),
+          contractname: fileName + ':' + contractName,
           compilerversion: `v${contractMetadataParsed.compiler.version}`, // see http://etherscan.io/solcversions for list of support versions
-          optimizationUsed: contractMetadataParsed.settings.optimizer.enabled
-            ? 1
-            : 0, // 0 = Optimization used, 1 = No Optimization
-          runs: contractMetadataParsed.settings.optimizer.runs, // set to 200 as default unless otherwise
           constructorArguements: contractArgumentsParam, // if applicable
         }
 
