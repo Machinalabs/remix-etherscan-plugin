@@ -1,7 +1,6 @@
-import { PluginApi, IRemixApi, PluginClient, Api } from "@remixproject/plugin"
+import { PluginClient } from "@remixproject/plugin"
 
-type RemixClient = PluginApi<Readonly<IRemixApi>> &
-  PluginClient<Api, Readonly<IRemixApi>>
+type RemixClient = PluginClient
 
 export const getEtherScanApi = (network: string) => {
   return network === "main"

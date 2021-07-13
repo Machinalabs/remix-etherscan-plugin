@@ -1,21 +1,17 @@
 import React, { useState } from "react"
 
 import {
-  PluginApi,
-  IRemixApi,
   PluginClient,
-  Api,
-  CompilationResult,
 } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 
 import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
 import { Receipt } from "../types"
+import { CompilationResult } from "@remixproject/plugin-api"
 
 interface Props {
-  client: PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>
+  client: PluginClient
   apiKey: string
   onVerifiedContract: (receipt: Receipt) => void
   contracts: string[]
