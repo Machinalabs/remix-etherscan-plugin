@@ -9,6 +9,7 @@ import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
 import { Receipt } from "../types"
 import { CompilationResult } from "@remixproject/plugin-api"
+import axios from 'axios'
 
 interface Props {
   client: PluginClient
@@ -103,7 +104,7 @@ export const VerifyView: React.FC<Props> = ({
         if (!contractMetadata) {
           return "Please recompile contract"
         }
-
+        
         const contractMetadataParsed = JSON.parse(contractMetadata)
 
         const fileName = getContractFileName(
@@ -142,8 +143,8 @@ export const VerifyView: React.FC<Props> = ({
           type: "info",
           title: "Verifying ...",
         })
-        const response = await fetch(etherscanApi, { method: "POST", body })
-        const { message, result, status } = await response.json()
+        const response = await axios.post(etherscanApi, body)
+        const { message, result, status } = await response.data
 
         if (message === "OK" && status === "1") {
           resetAfter10Seconds()
