@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react"
 
 import {
-  createIframeClient,
   CompilationFileSources,
   CompilationResult,
-} from "@remixproject/plugin"
+} from "@remixproject/plugin-api"
+
+import { PluginClient } from "@remixproject/plugin";
+import { createClient } from "@remixproject/plugin-webview";
 
 import { AppContext } from "./AppContext"
 import { Routes } from "./routes"
@@ -44,13 +46,14 @@ const App = () => {
 
   useEffect(() => {
     console.log("Remix Etherscan loading...")
-    const client = createIframeClient({ devMode })
+    const client = new PluginClient()
+    createClient(client)
     const loadClient = async () => {
       await client.onload()
       setClientInstance(client)
       console.log("Remix Etherscan Plugin has been loaded")
 
-      client.solidity.on(
+      client.on("solidity",
         "compilationFinished",
         (
           fileName: string,
@@ -72,11 +75,11 @@ const App = () => {
         }
       )
 
-      const currentTheme = await client.call("theme", "currentTheme")
-      setThemeType(currentTheme.quality)
-      client.on("theme", "themeChanged", (theme) => {
-        setThemeType(theme.quality)
-      })
+      //const currentTheme = await client.call("theme", "currentTheme")
+      //setThemeType(currentTheme.quality)
+      //client.on("theme", "themeChanged", (theme) => {
+      //  setThemeType(theme.quality)
+      //})
     }
 
     loadClient()

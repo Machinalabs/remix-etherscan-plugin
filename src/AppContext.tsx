@@ -1,5 +1,5 @@
 import React from "react"
-import { PluginApi, IRemixApi, Api, PluginClient } from "@remixproject/plugin"
+import { PluginClient } from "@remixproject/plugin"
 
 import { Receipt, ThemeType } from "./types"
 
@@ -8,8 +8,7 @@ export const AppContext = React.createContext({
   setAPIKey: (value: string) => {
     console.log("Set API Key from Context")
   },
-  clientInstance: {} as PluginApi<Readonly<IRemixApi>> &
-    PluginClient<Api, Readonly<IRemixApi>>,
+  clientInstance: {} as PluginClient,
   receipts: [] as Receipt[],
   setReceipts: (receipts: Receipt[]) => {
     console.log("Calling Set Receipts")
