@@ -18,8 +18,6 @@ import { Receipt, ThemeType } from "./types"
 
 import "./App.css"
 
-const devMode = { port: 8080 }
-
 export const getNewContractNames = (compilationResult: CompilationResult) => {
   const compiledContracts = compilationResult.contracts
   let result: string[] = []
