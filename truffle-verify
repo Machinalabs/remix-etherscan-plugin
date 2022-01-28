@@ -1,0 +1,2 @@
+npm install -D truffle-plugin-verify
+yarn add -D truffle-plugin-verify
