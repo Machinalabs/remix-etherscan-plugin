@@ -1,6 +1,8 @@
 # Remix Etherscan Plugin
+https://github.com/Rig1992/remix-etherscan-plugin/actions/workflows/webpack.yml/badge.svg
 
 A plugin to verify contracts in Etherscan
+[![NodeJS with Webpack](https://github.com/Rig1992/remix-etherscan-plugin/actions/workflows/webpack.yml/badge.svg)](https://github.com/Rig1992/remix-etherscan-plugin/actions/workflows/webpack.yml)
 
 [![CircleCI](https://circleci.com/gh/Machinalabs/remix-etherscan-plugin.svg?style=svg)](https://circleci.com/gh/Machinalabs/remix-etherscan-plugin)
 
