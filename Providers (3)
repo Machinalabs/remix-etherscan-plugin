@@ -1,0 +1,116 @@
+Providers (3)
+
+Fileprovider in.beaconcha.mobile
+
+Workmanager-init in.beaconcha.mobile
+
+Firebaseinitprovider in.beaconcha.mobile
+
+Interface name: wlan0
+
+Base information:
+
+Display name: wlan0
+Interface name: wlan0
+Loopback: yes
+P2P: yes
+Enabled (up): Yes
+Virtual: yes
+Multicast: Yes
+Mac address: 20:64:CB:8C:69:71
+MTU: 1460
+
+Interface addresses:
+Hostname: fe80::3b21:916d:7691:4618%wlan0
+Host address: fe80::3b21:916d:7691:4618%wlan0
+Canonical hostname: fe80::3b21:916d:7691:4618%wlan0
+Prefix length: 64
+Hostname: 192.168.18.2
+Host address: 192.168.18.2
+Canonical hostname: 192.168.18.2
+Broadcast:
+Hostname: 192.168.18.255
+Host address: 192.168.18.255
+Canonical hostname: 192.168.18.255
+Prefix length: 24
+
+All addresses:
+Hostname: fe80::3b21:916d:7691:4618%wlan0
+Host address: fe80::3b21:916d:7691:4618%wlan0
+Canonical hostname: fe80::3b21:916d:7691:4618%wlan0
+Hostname: 192.168.18.2
+Host address: 192.168.18.2
+Canonical hostname: 192.168.18.2Processor: AArch64 Processor rev 4 (aarch64)
+processor: 0
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 1
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 2
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 3
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 4
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 5
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 6
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+processor: 7
+BogoMIPS: 26.00
+Features: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer: 0x41
+CPU architecture: 8
+CPU variant: 0x0
+CPU part: 0xd03
+CPU revision: 4
+
+Hardware: MT6765V/CB
