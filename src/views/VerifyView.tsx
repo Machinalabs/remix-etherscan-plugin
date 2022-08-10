@@ -1,15 +1,13 @@
 import React, { useState } from "react"
 
-import {
-  PluginClient,
-} from "@remixproject/plugin"
+import { PluginClient } from "@remixproject/plugin"
 import { Formik, ErrorMessage, Field } from "formik"
 
 import { getNetworkName, getEtherScanApi, getReceiptStatus } from "../utils"
 import { SubmitButton } from "../components"
 import { Receipt } from "../types"
 import { CompilationResult } from "@remixproject/plugin-api"
-import axios from 'axios'
+import axios from "axios"
 
 interface Props {
   client: PluginClient
@@ -89,11 +87,12 @@ export const VerifyView: React.FC<Props> = ({
       contractName: string,
       compilationResultParam: any
     ) => {
-      const network = await getNetworkName(client)
+      const { network, networkId } = await getNetworkName(client)
       if (network === "vm") {
         return "Cannot verify in the selected network"
       }
-      const etherscanApi = getEtherScanApi(network)
+
+      const etherscanApi = getEtherScanApi(network, networkId)
 
       try {
         const contractMetadata = getContractMetadata(
@@ -104,7 +103,7 @@ export const VerifyView: React.FC<Props> = ({
         if (!contractMetadata) {
           return "Please recompile contract"
         }
-        
+
         const contractMetadataParsed = JSON.parse(contractMetadata)
 
         const fileName = getContractFileName(
@@ -113,14 +112,14 @@ export const VerifyView: React.FC<Props> = ({
         )
 
         const jsonInput = {
-          language: 'Solidity',
+          language: "Solidity",
           sources: compilationResultParam.source.sources,
           settings: {
             optimizer: {
               enabled: contractMetadataParsed.settings.optimizer.enabled,
-              runs: contractMetadataParsed.settings.optimizer.runs
-            }
-          }
+              runs: contractMetadataParsed.settings.optimizer.runs,
+            },
+          },
         }
 
         const data: { [key: string]: string | any } = {
@@ -130,7 +129,7 @@ export const VerifyView: React.FC<Props> = ({
           codeformat: "solidity-standard-json-input",
           contractaddress: contractAddress, // Contract Address starts with 0x...
           sourceCode: JSON.stringify(jsonInput),
-          contractname: fileName + ':' + contractName,
+          contractname: fileName + ":" + contractName,
           compilerversion: `v${contractMetadataParsed.compiler.version}`, // see http://etherscan.io/solcversions for list of support versions
           constructorArguements: contractArgumentsParam, // if applicable
         }

@@ -19,12 +19,12 @@ export const ReceiptsView: React.FC = () => {
     apiKey: string
   ) => {
     try {
-      const network = await getNetworkName(clientInstance)
+      const { network, networkId } = await getNetworkName(clientInstance)
       if (network === "vm") {
         setResults("Cannot verify in the selected network")
         return
       }
-      const etherscanApi = getEtherScanApi(network)
+      const etherscanApi = getEtherScanApi(network, networkId)
       const result = await getReceiptStatus(
         values.receiptGuid,
         apiKey,

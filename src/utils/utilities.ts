@@ -1,21 +1,36 @@
 import { PluginClient } from "@remixproject/plugin"
-import axios from 'axios'
+import axios from "axios"
+import { EtherscanAPIurls } from "./networks"
 type RemixClient = PluginClient
 
-export const getEtherScanApi = (network: string) => {
-  return network === "main"
-    ? `https://api.etherscan.io/api`
-    : `https://api-${network}.etherscan.io/api`
+export const getEtherScanApi = (network: string, networkId: any) => {
+  let apiUrl
+
+  if (network === "main") {
+    apiUrl = "https://api.etherscan.io/api"
+  } else if (network === "custom") {
+    if (!(networkId in EtherscanAPIurls)) {
+      throw new Error("no known network to verify against")
+    }
+    apiUrl = (EtherscanAPIurls as any)[networkId]
+  } else {
+    apiUrl = `https://api-${network}.etherscan.io/api`
+  }
+
+  return apiUrl
 }
 
 export const getNetworkName = async (client: RemixClient) => {
   const network = await client.call("network", "detectNetwork")
+
   if (!network) {
     throw new Error("no known network to verify against")
   }
   const name = network.name!.toLowerCase()
-  // TODO : remove that when https://github.com/ethereum/remix-ide/issues/2017 is fixe
-  return name === "görli" ? "goerli" : name
+
+  const id = network.id
+
+  return { network: name, networkId: id }
 }
 
 export const getReceiptStatus = async (

@@ -5,8 +5,8 @@ import {
   CompilationResult,
 } from "@remixproject/plugin-api"
 
-import { PluginClient } from "@remixproject/plugin";
-import { createClient } from "@remixproject/plugin-webview";
+import { PluginClient } from "@remixproject/plugin"
+import { createClient } from "@remixproject/plugin-webview"
 
 import { AppContext } from "./AppContext"
 import { Routes } from "./routes"
@@ -51,7 +51,8 @@ const App = () => {
       setClientInstance(client)
       console.log("Remix Etherscan Plugin has been loaded")
 
-      client.on("solidity",
+      client.on(
+        "solidity",
         "compilationFinished",
         (
           fileName: string,
@@ -98,14 +99,16 @@ const App = () => {
           if (!clientInstanceRef.current) {
             return
           }
-          const network = await getNetworkName(clientInstanceRef.current)
+          const { network, networkId } = await getNetworkName(
+            clientInstanceRef.current
+          )
           if (network === "vm") {
             return
           }
           const status = await getReceiptStatus(
             item.guid,
             apiKey,
-            getEtherScanApi(network)
+            getEtherScanApi(network, networkId)
           )
           if (status === "Pass - Verified") {
             const newReceipts = receipts.map((currentReceipt: Receipt) => {
