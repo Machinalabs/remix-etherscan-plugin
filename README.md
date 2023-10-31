@@ -1,3 +1,13 @@
+🚨🚨🚨🚨🚨 **WARNING** 🚨🚨🚨🚨🚨
+
+This repository is not maintained anymore.
+
+The Remix Team has included this into the core Remix project.
+
+You can check it here. https://github.com/ethereum/remix-project/tree/master/apps/etherscan 
+
+-----
+
 # Remix Etherscan Plugin
 
 A plugin to verify contracts in Etherscan
